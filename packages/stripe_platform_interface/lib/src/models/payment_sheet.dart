@@ -6,6 +6,25 @@ import 'package:stripe_platform_interface/src/models/payment_methods.dart';
 part 'payment_sheet.freezed.dart';
 part 'payment_sheet.g.dart';
 
+@freezed
+
+/// Object that can be used to explain the different charges on the Apple Pay sheet.
+class ApplePayCartRecurringSummaryItem with _$ApplePayCartRecurringSummaryItem {
+  const factory ApplePayCartRecurringSummaryItem({
+    /// Short localized description of the item.
+    required String label,
+
+    /// The monetary amount.
+    required String amount,
+    required int? intervalUnit,
+    required int? intervalCount,
+  }) = _ApplePayCartRecurringSummaryItem;
+
+  factory ApplePayCartRecurringSummaryItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$ApplePayCartRecurringSummaryItem(json);
+}
+
 /// Parameters used to setup a Payment sheet.
 ///
 /// For more info about the payment sheet see: https://stripe.com/docs/payments/accept-a-payment.
@@ -36,6 +55,7 @@ class SetupPaymentSheetParameters with _$SetupPaymentSheetParameters {
     /// If this value is null make sure to add a [paymentIntentClientSecret]
 
     String? setupIntentClientSecret,
+    List<ApplePayCartRecurringSummaryItem> cartItems,
 
     /// Display name of the merchant
     String? merchantDisplayName,

@@ -68,15 +68,21 @@ class StripeSdk: RCTEventEmitter, STPApplePayContextDelegate, STPBankSelectionVi
         self.paymentSheetFlowController = nil
         
         if  params["applePay"] as? Bool == true {
+            var items = [];
+            if  let cartItems = params["cartItems"] as? NSArray {
+                items = cartItems;
+            }
+
             if let merchantIdentifier = self.merchantIdentifier, let merchantCountryCode = params["merchantCountryCode"] as? String {
                 configuration.applePay = .init(merchantId: merchantIdentifier,
-                                               merchantCountryCode: merchantCountryCode)
+                                               merchantCountryCode: merchantCountryCode,
+                                               cartItems: items)
             } else {
                 resolve(Errors.createError(PaymentSheetErrorType.Failed.rawValue, "Either merchantIdentifier or merchantCountryCode is missing"))
                 return
             }
         }
-        
+
         if let merchantDisplayName = params["merchantDisplayName"] as? String {
             configuration.merchantDisplayName = merchantDisplayName
         }
